@@ -12,4 +12,8 @@ const deleteCreditLine = (customerId, creditLineId) => {
     return creditLinesService.deleteCreditLine(customerId, creditLineId);
 };
 
-export default { update, getResume, deleteCreditLine };
+const getStatement = (customerId) => {
+    return creditLinesService.getStatement(customerId);
+};
+
+export default { update, getResume, deleteCreditLine, getStatement };

@@ -76,5 +76,29 @@ const deleteCreditLine = async(req, res, next) => {
 
 };
 
+const getStatement = async(req, res, next) => {
 
-export default { update, getResume, deleteCreditLine };
+  if (!req.headers['x-customer-id']) {
+    return res.status(422).send();
+    next();
+  }
+  const customerId = req.headers['x-customer-id'];
+  logger.log("info", 'GET-STATEMENT-CREDIT-LINES', `${customerId}`);
+  let start = process.hrtime();
+
+  try {
+    const statement = await creditLines.getStatement(customerId);
+    let end = process.hrtime(start);
+    logger.log("info", 'GET-STATEMENT-CREDIT-CARDS-LINES', `${end[0]}.${end[1]}`);
+    return res.status(200).send(statement);
+    next();
+  } catch (e) {
+    console.log("get statement error", e)
+    logger.log("error", `Error obteniendo la informacion de las lineas de credito del usuario ${customerId} para balance`, e );
+    return res.status(500).send();
+    next();
+  }
+
+};
+
+export default { update, getResume, deleteCreditLine, getStatement };

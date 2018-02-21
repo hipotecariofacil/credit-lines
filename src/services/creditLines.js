@@ -92,4 +92,30 @@ const addFilesToResponse = (creditLines, files) => {
   })
   
 }
-export default { update, getResume, deleteCreditLine };
+
+const getStatement = (customerId) => {
+
+  return new Promise(async(resolve, reject)=>{
+      const sql = `SELECT 
+                credit_line_id, bank, fit_credit_line , amount_used 
+              FROM
+                hipopo.credit_lines
+              WHERE 
+                customer_id = ? 
+              ORDER BY 
+              credit_line_id 
+              DESC`;
+      Promise.all([
+        executeQuery(sql, [customerId])
+      ])
+      .then((results) => {
+        resolve({data:results[0], files:[]})
+      })
+      .catch((e)=> {
+        console.log(e)
+        reject(e)
+      })
+
+  });
+};
+export default { update, getResume, deleteCreditLine, getStatement };

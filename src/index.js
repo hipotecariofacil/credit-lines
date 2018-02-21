@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import {update, getResume, deleteCreditLine} from "./controllers/creditLines";
+import {update, getResume, deleteCreditLine, getStatement} from "./controllers/creditLines";
 import logger from './core/logger';
 import {checkJwt} from './middlewares/restrictedService';
 
@@ -15,6 +15,7 @@ app.set("port", 3017);
 
 //getters
 app.get("/credit-lines/resume", checkJwt, getResume);
+app.get("/statement", checkJwt, getStatement);
 
 //updates
 app.put("/credit-lines", checkJwt, update);
