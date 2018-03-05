@@ -6,7 +6,7 @@
     "build": "babel src -d build",
     "start": "NODE_ENV=production node ./build/index.js",
     "dev": "npm run build; node ./build/index.js",
-    "deploy": "now -e TOKEN_SECRET=@token_secret -e DB_USER=@db_user -e DB_PASSWORD=@db_password -e DB_HOST=@db_host -e DB_PORT=@db_port; now alias"
+    "deploy": "now -e DB_USER=@db_user -e DB_PASSWORD=@db_password -e DB_HOST=@db_host -e DB_PORT=@db_port; now alias"
   },
   "dependencies": {
     "axios": "^0.16.2",
