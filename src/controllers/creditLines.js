@@ -11,17 +11,17 @@ const update = async(req, res, next) => {
   }
   const customerId = req.headers['x-customer-id'];
   const data = req.body;
-  logger.log("info", "UPDATE CREDIT-LINES", `${customerId}`);
+  logger.log("info", "UPDATE CREDIT-LINES", {customerId});
   let start = process.hrtime();
   try {
     const result =  await creditLines.update(customerId, data);
 
     let end = process.hrtime(start);
-    logger.log("info", "UPDATE CREDIT-LINES", `${end[0]}.${end[1]}`);
+    logger.log("info", "UPDATE CREDIT-LINES", {processTime:end[0]+'.'+end[1]});
     return res.status(200).send(result);
     next();
-  } catch (e) {
-    logger.log("error", `Error actualizando las lineas de credito del usuario ${customerId}`, e );
+  } catch (error) {
+    logger.log("error", `Error actualizando las lineas de credito del usuario ${customerId}`, {errorMessage:error.toString()} );
     return res.status(500).send();
     next();
   }
@@ -34,18 +34,17 @@ const getResume = async(req, res, next) => {
     next();
   }
   const customerId = req.headers['x-customer-id'];
-  logger.log("info", 'GET CREDIT-LINES', `${customerId}`);
+  logger.log("info", 'GET CREDIT-LINES', {customerId});
   let start = process.hrtime();
 
   try {
     const resume = await creditLines.getResume(customerId);
     let end = process.hrtime(start);
-    logger.log("info", 'GET CREDIT-LINES', `${end[0]}.${end[1]}`);
+    logger.log("info", 'GET CREDIT-LINES', {processTime:end[0]+'.'+end[1]});
     return res.status(200).send(resume);
     next();
-  } catch (e) {
-    console.log("TUTO", e)
-    logger.log("error", `Error obteniendo las lineas de credito del usuario ${customerId}`, e );
+  } catch (error) {
+    logger.log("error", `Error obteniendo las lineas de credito del usuario ${customerId}`, {errorMessage:error.toString()});
     return res.status(500).send();
     next();
   }
@@ -58,18 +57,17 @@ const deleteCreditLine = async(req, res, next) => {
   }
   const customerId  = req.headers['x-customer-id'];
   const creditLineId  = get(req,'body.credit_line_id');
-  logger.log("info", 'DELETE CREDIT-LINES', `${customerId}`);
+  logger.log("info", 'DELETE CREDIT-LINES', {customerId});
   let start = process.hrtime();
 
   try {
     await creditLines.deleteCreditLine(customerId, creditLineId);
     let end = process.hrtime(start);
-    logger.log("info", 'DELETE CREDIT-LINES', `${end[0]}.${end[1]}`);
+    logger.log("info", 'DELETE CREDIT-LINES', {processTime:end[0]+'.'+end[1]});
     return res.status(200).send();
     next();
-  } catch (e) {
-    console.log(e)
-    logger.log("error", `Error eliminando una linea de credito ${creditLineId} del usuario ${customerId}`, e );
+  } catch (error) {
+    logger.log("error", `Error eliminando una linea de credito ${creditLineId} del usuario ${customerId}`, {errorMessage:error.toString()} );
     return res.status(500).send();
     next();
   }
@@ -83,18 +81,17 @@ const getStatement = async(req, res, next) => {
     next();
   }
   const customerId = req.headers['x-customer-id'];
-  logger.log("info", 'GET-STATEMENT-CREDIT-LINES', `${customerId}`);
+  logger.log("info", 'GET-STATEMENT-CREDIT-LINES', {customerId});
   let start = process.hrtime();
 
   try {
     const statement = await creditLines.getStatement(customerId);
     let end = process.hrtime(start);
-    logger.log("info", 'GET-STATEMENT-CREDIT-CARDS-LINES', `${end[0]}.${end[1]}`);
+    logger.log("info", 'GET-STATEMENT-CREDIT-CARDS-LINES', {processTime:end[0]+'.'+end[1]});
     return res.status(200).send(statement);
     next();
-  } catch (e) {
-    console.log("get statement error", e)
-    logger.log("error", `Error obteniendo la informacion de las lineas de credito del usuario ${customerId} para balance`, e );
+  } catch (error) {
+    logger.log("error", `Error obteniendo la informacion de las lineas de credito del usuario ${customerId} para balance`, {errorMessage:error.toString()} );
     return res.status(500).send();
     next();
   }

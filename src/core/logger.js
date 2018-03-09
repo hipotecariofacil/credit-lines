@@ -1,39 +1,41 @@
-/* istanbul ignore next */
-import winston from 'winston';
-import { each } from 'lodash';
+import {createLogger, format, transports} from 'winston';
+import {createLogger as createLoggerLogz} from 'logzio-nodejs';
 
-/* istanbul ignore next */
-const timestamp = () => Date.now();
+import { each, set, isEmpty } from 'lodash';
+import {LOGZ_KEY} from '../config/environment'
 
-const serializeMeta = (meta) => {
-    let output = '';
-    each(meta, (value, key) => {
-        let val = value;
-        if (val instanceof Object) {
-            val = JSON.stringify(val).replace(/"/g, '\\"');
-        }
-        output = `${output} ${key}="${val}"`;
-    });
-    return output;
-};
-
-/* istanbul ignore next */
-const formatter = (options) => {
-    // Return string will be passed to logger.
-    const meta = (options.meta && Object.keys(options.meta).length ? serializeMeta(options.meta) : '');
-
-    return `time="${options.timestamp()}" level="${options.level.toUpperCase()}" cid="hostname"` +
-    ` message="${(undefined !== options.message ? options.message : '')}"${meta}`;
-};
-
-const logger = new (winston.Logger)({
+const logger = createLogger({
+    format: format.json(),
     transports: [
-        new (winston.transports.Console)({
-            timestamp,
-            formatter,
-            level: 'debug'
-        })
+        new transports.Console({
+            format: format.simple(),
+            level: 'debug',
+          })
     ]
+  });
+
+const loggerLogz = createLoggerLogz({
+    token: LOGZ_KEY,
+    type:'services-credit-lines'
 });
 
-export default logger;
+const log = (level, message, meta = {}) => {
+    const timestamp = Date.now()
+    let env = 'dev'
+    if(process.env.NODE_ENV === 'production'){
+        env = 'production';
+        //logz solo en produccion para ahorrar plata
+        loggerLogz.log({level, message, meta, environment:env, timestamp});
+    } 
+       
+    const msg = message + ' environment="'+env + '" timestamp="'+ timestamp+'"';
+    let obj = {level,message:msg}
+    if(!isEmpty(meta)) {
+        set(obj, 'meta', meta)
+    }
+    logger.log(obj);
+
+    
+};
+
+export default {log};

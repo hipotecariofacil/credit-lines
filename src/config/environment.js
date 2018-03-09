@@ -4,5 +4,6 @@ export default {
   DB_HOST: process.env.DB_HOST || "localhost",
   DB_PORT: process.env.DB_PORT || "/var/run/mysqld/mysqld.sock",
   DB_NAME: process.env.DB_NAME || "hipopo",
-  AUTH0_DOMAIN: process.env.AUTH0_DOMAIN || 'hipotecariofacil.auth0.com'
+  AUTH0_DOMAIN: process.env.AUTH0_DOMAIN || 'hipotecariofacil.auth0.com',
+  LOGZ_KEY: process.env.LOGZ_KEY  || 'nTBQpWmlIQfYjOPQLfxsIkbFOpCSvALP'
 }

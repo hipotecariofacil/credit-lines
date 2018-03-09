@@ -6,19 +6,20 @@
     "build": "babel src -d build",
     "start": "NODE_ENV=production node ./build/index.js",
     "dev": "npm run build; node ./build/index.js",
-    "deploy": "now -e DB_USER=@db_user -e DB_PASSWORD=@db_password -e DB_HOST=@db_host -e DB_PORT=@db_port; now alias"
+    "deploy": "now -e LOGZ_KEY=@logzkey -e DB_USER=@db_user -e DB_PASSWORD=@db_password -e DB_HOST=@db_host -e DB_PORT=@db_port; now alias"
   },
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.1",
     "cors": "^2.8.4",
     "express": "^4.15.2",
-    "lodash": "^4.17.4",
-    "mysql": "^2.13.0",
-    "winston": "^2.3.1",
     "express-jwt": "^5.3.0",
     "express-jwt-authz": "^1.0.0",
-    "jwks-rsa": "^1.2.1"
+    "jwks-rsa": "^1.2.1",
+    "lodash": "^4.17.4",
+    "logzio-nodejs": "^0.4.10",
+    "mysql": "^2.13.0",
+    "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
