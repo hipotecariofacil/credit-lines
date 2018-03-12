@@ -1,6 +1,8 @@
 import {get} from 'lodash'
 import creditLines from "../domain/creditLines";
 import logger from "../core/logger";
+import converHrTime from 'convert-hrtime';
+
 import 'babel-polyfill';
 
 const update = async(req, res, next) => {
@@ -16,8 +18,8 @@ const update = async(req, res, next) => {
   try {
     const result =  await creditLines.update(customerId, data);
 
-    let end = process.hrtime(start);
-    logger.log("info", "UPDATE CREDIT-LINES", {processTime:end[0]+'.'+end[1]});
+    let end = converHrTime(process.hrtime(start));
+    logger.log("info", "UPDATE CREDIT-LINES", {processTime:end.milliseconds});
     return res.status(200).send(result);
     next();
   } catch (error) {
@@ -39,8 +41,8 @@ const getResume = async(req, res, next) => {
 
   try {
     const resume = await creditLines.getResume(customerId);
-    let end = process.hrtime(start);
-    logger.log("info", 'GET CREDIT-LINES', {processTime:end[0]+'.'+end[1]});
+    let end = converHrTime(process.hrtime(start));
+    logger.log("info", 'GET CREDIT-LINES', {processTime:end.milliseconds});
     return res.status(200).send(resume);
     next();
   } catch (error) {
@@ -62,8 +64,8 @@ const deleteCreditLine = async(req, res, next) => {
 
   try {
     await creditLines.deleteCreditLine(customerId, creditLineId);
-    let end = process.hrtime(start);
-    logger.log("info", 'DELETE CREDIT-LINES', {processTime:end[0]+'.'+end[1]});
+    let end = converHrTime(process.hrtime(start));
+    logger.log("info", 'DELETE CREDIT-LINES', {processTime:end.milliseconds});
     return res.status(200).send();
     next();
   } catch (error) {
@@ -86,8 +88,8 @@ const getStatement = async(req, res, next) => {
 
   try {
     const statement = await creditLines.getStatement(customerId);
-    let end = process.hrtime(start);
-    logger.log("info", 'GET-STATEMENT-CREDIT-CARDS-LINES', {processTime:end[0]+'.'+end[1]});
+    let end = converHrTime(process.hrtime(start));
+    logger.log("info", 'GET-STATEMENT-CREDIT-CARDS-LINES', {processTime:end.milliseconds});
     return res.status(200).send(statement);
     next();
   } catch (error) {

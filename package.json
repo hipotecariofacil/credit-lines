@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.1",
+    "convert-hrtime": "^2.0.0",
     "cors": "^2.8.4",
     "express": "^4.15.2",
     "express-jwt": "^5.3.0",
